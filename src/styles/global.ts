@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components'
 
 export const GlobaStyle = createGlobalStyle`
     *{
@@ -9,12 +9,12 @@ export const GlobaStyle = createGlobalStyle`
 
     :focus {
         outline: 0;
-        box-shadow: 0 0 0 2px ${props => props.theme["green-500"]};
+        box-shadow: 0 0 0 2px ${(props) => props.theme['green-500']};
     }
 
     body{
-        background-color: ${props => props.theme["gray-900"]};
-        color: ${props => props.theme["gray-300"]}
+        background-color: ${(props) => props.theme['gray-900']};
+        color: ${(props) => props.theme['gray-300']}
 
     }
 
@@ -24,4 +24,4 @@ export const GlobaStyle = createGlobalStyle`
         font-size: 62.5%;
     }
 
-`;
+`
