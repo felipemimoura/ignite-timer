@@ -1,5 +1,6 @@
 import { Play } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   CountdownContainer,
   FormContainer,
@@ -9,15 +10,31 @@ import {
   StartCountDownButton,
   TaskInput,
 } from './styles'
+import * as zod from 'zod'
 /* 
  [x] Install React Hook form
  [x] Get form data with React hook form
  [x] Enable submit button when form data is available
-
+ [x] Install ZOD
+ [x] Install @hookform/resolver
+ [x] Import zod resolver from @hookform/resolver
+ [x] Import zod 
+ [x] Crate validation schema from  task
+  
 */
 
+const schema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod
+    .number()
+    .min(5, 'O ciclo precisa ser de no mínimo 5 minutos')
+    .max(60, 'O ciclo precisa der de no máximo 60 minutos'),
+})
+
 export const Home = () => {
-  const { register, handleSubmit, watch } = useForm()
+  const { register, handleSubmit, watch } = useForm({
+    resolver: zodResolver(schema),
+  })
 
   const onSubmit = (data: any) => {
     console.log(data)
