@@ -11,17 +11,6 @@ import {
   TaskInput,
 } from './styles'
 import * as zod from 'zod'
-/* 
- [x] Install React Hook form
- [x] Get form data with React hook form
- [x] Enable submit button when form data is available
- [x] Install ZOD
- [x] Install @hookform/resolver
- [x] Import zod resolver from @hookform/resolver
- [x] Import zod 
- [x] Crate validation schema from  task
-  
-*/
 
 const schema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
@@ -30,14 +19,21 @@ const schema = zod.object({
     .min(5, 'O ciclo precisa ser de no mínimo 5 minutos')
     .max(60, 'O ciclo precisa der de no máximo 60 minutos'),
 })
+type CicleFormDate = zod.infer<typeof schema>
 
 export const Home = () => {
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit, watch, reset } = useForm<CicleFormDate>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      minutesAmount: 0,
+      task: '',
+    },
   })
 
   const onSubmit = (data: any) => {
     console.log(data)
+
+    reset()
   }
 
   const hasTask = watch('task')
