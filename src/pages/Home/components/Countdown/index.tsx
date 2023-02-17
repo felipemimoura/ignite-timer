@@ -1,12 +1,16 @@
 import { differenceInSeconds } from 'date-fns'
-import { useContext, useEffect, useState } from 'react'
-import { CycleContext } from '../..'
+import { useContext, useEffect } from 'react'
+import { CycleContext } from '../../../../contexts/CyclesContext'
 import { CountdownContainer, Separator } from './styles'
 
 export const Countdown = () => {
-  const { activeCycle, activeCycleId, markCurrentCycleAsFinished } =
-    useContext(CycleContext)
-  const [amountSecontPassed, setAmountSecontPassed] = useState(0)
+  const {
+    activeCycle,
+    activeCycleId,
+    markCurrentCycleAsFinished,
+    amountSecontPassed,
+    setSecondsPassed,
+  } = useContext(CycleContext)
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0 // Transformando os minutos em segundos
   const currentSeconds = activeCycle ? totalSeconds - amountSecontPassed : 0 // Pegando quandos segundos se passaram
@@ -27,17 +31,10 @@ export const Countdown = () => {
         )
         if (secondsDiff >= totalSeconds) {
           markCurrentCycleAsFinished()
-          // setCycles((state) =>
-          //   state.map((cycle) =>
-          //     cycle.id === activeCycleId
-          //       ? { ...cycle, finishedDate: new Date() }
-          //       : cycle,
-          //   ),
-          // )
-          setAmountSecontPassed(totalSeconds)
+          setSecondsPassed(totalSeconds)
           clearInterval(interval)
         } else {
-          setAmountSecontPassed(secondsDiff)
+          setSecondsPassed(secondsDiff)
         }
       })
     }
@@ -45,11 +42,19 @@ export const Countdown = () => {
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle, activeCycleId, markCurrentCycleAsFinished, totalSeconds])
+  }, [
+    activeCycle,
+    activeCycleId,
+    markCurrentCycleAsFinished,
+    setSecondsPassed,
+    totalSeconds,
+  ])
 
   useEffect(() => {
     if (activeCycle) {
       document.title = `${minutes}:${seconds}`
+    } else {
+      document.title = `Timer`
     }
   }, [activeCycle, minutes, seconds])
 
